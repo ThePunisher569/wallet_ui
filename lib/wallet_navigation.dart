@@ -18,6 +18,8 @@ class WalletNavigationRail extends StatefulWidget {
 }
 
 class _WalletNavigationRailState extends State<WalletNavigationRail> {
+  double elevation = 0;
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -66,41 +68,72 @@ class _WalletNavigationRailState extends State<WalletNavigationRail> {
                     weight: 300,
                     size: 32,
                   ),
-                  leading: Column(
-                    children: [
-                      gapV,
-                      if (state.isExpanded) ...[
-                        Text(
-                          'Wallet',
-                          style: widget.theme.textTheme.headlineLarge
-                              ?.copyWith(fontWeight: FontWeight.bold),
+                  leading: state.isExpanded
+                      ? MouseRegion(
+                          onHover: (event) => setState(() {
+                            elevation = 48;
+                          }),
+                          onExit: (event) => setState(() {
+                            elevation = 0;
+                          }),
+                          child: Material(
+                            elevation: elevation,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(borderRadius),
+                            ),
+                            shadowColor: elevation == 48 ? ethereumColor : null,
+                            color:
+                                elevation == 48 ? ethereumColor.shade900 : null,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 0,
+                                horizontal: 64,
+                              ),
+                              child: Column(
+                                children: [
+                                  gapV,
+                                  Text(
+                                    'Wallet',
+                                    style: widget.theme.textTheme.headlineLarge
+                                        ?.copyWith(fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(
+                                    height: 24,
+                                  ),
+                                  RandomAvatar(
+                                    'd613c54a0d3c90e307',
+                                    width: state.isExpanded ? 96 : 64,
+                                    height: state.isExpanded ? 96 : 64,
+                                  ),
+                                  gapV,
+                                  Text(
+                                    'Aatif',
+                                    style: widget.theme.textTheme.titleLarge,
+                                  ),
+                                  Text(
+                                    'Flutter Developer',
+                                    style: widget.theme.textTheme.labelLarge
+                                        ?.copyWith(color: Colors.white38),
+                                  ),
+                                  const SizedBox(
+                                    height: 24,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24.0,
+                            vertical: 16.0,
+                          ),
+                          child: RandomAvatar(
+                            'd613c54a0d3c90e307',
+                            width: state.isExpanded ? 96 : 64,
+                            height: state.isExpanded ? 96 : 64,
+                          ),
                         ),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                      ],
-                      RandomAvatar(
-                        'd613c54a0d3c90e307',
-                        width: state.isExpanded ? 96 : 64,
-                        height: state.isExpanded ? 96 : 64,
-                      ),
-                      if (state.isExpanded) ...[
-                        gapV,
-                        Text(
-                          'Aatif',
-                          style: widget.theme.textTheme.titleLarge,
-                        ),
-                        Text(
-                          'Flutter Developer',
-                          style: widget.theme.textTheme.labelLarge
-                              ?.copyWith(color: Colors.white38),
-                        ),
-                      ],
-                      const SizedBox(
-                        height: 24,
-                      ),
-                    ],
-                  ),
                   destinations: const [
                     NavigationRailDestination(
                       icon: Icon(
@@ -243,12 +276,13 @@ class _WalletNavigationRailState extends State<WalletNavigationRail> {
                                             hamburgerMenuIcon,
                                           ],
                                         ),
+                                        gapV,
                                         Text(
                                           'History available',
                                           style: widget
                                               .theme.textTheme.titleMedium,
                                         ),
-                                        gapV,
+                                        const SizedBox(height: 8),
                                         Text(
                                           'Check your weekly\ntransaction reports',
                                           style: widget
@@ -260,35 +294,26 @@ class _WalletNavigationRailState extends State<WalletNavigationRail> {
                                       ],
                                     ),
                                   ),
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: IconButton(
-                                      onPressed: () {
-                                        context
+                                  IconButton(
+                                    onPressed: () {
+                                      context
+                                          .read<WalletNavigationState>()
+                                          .toggle();
+                                    },
+                                    icon: context
                                             .read<WalletNavigationState>()
-                                            .toggle();
-                                      },
-                                      icon: context
-                                              .read<WalletNavigationState>()
-                                              .isExpanded
-                                          ? const Icon(
-                                              Icons.keyboard_arrow_left_rounded,
-                                            )
-                                          : const Icon(
-                                              Icons
-                                                  .keyboard_arrow_right_rounded,
-                                            ),
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStatePropertyAll(
-                                          Colors.grey.shade900,
-                                        ),
-                                        alignment: Alignment.center,
-                                        elevation:
-                                            const MaterialStatePropertyAll(8),
-                                        padding: const MaterialStatePropertyAll(
-                                          EdgeInsets.all(10),
-                                        ),
+                                            .isExpanded
+                                        ? const Icon(
+                                            Icons.keyboard_arrow_left_rounded,
+                                          )
+                                        : const Icon(
+                                            Icons.keyboard_arrow_right_rounded,
+                                          ),
+                                    style: const ButtonStyle(
+                                      alignment: Alignment.centerRight,
+                                      elevation: MaterialStatePropertyAll(8),
+                                      padding: MaterialStatePropertyAll(
+                                        EdgeInsets.all(10),
                                       ),
                                     ),
                                   )

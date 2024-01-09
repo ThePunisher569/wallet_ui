@@ -52,10 +52,10 @@ class _MarketChartState extends State<MarketChart> {
               alignment: Alignment.center,
               borderRadius: BorderRadius.circular(16),
               padding: const EdgeInsets.all(8.0),
-              elevation: 8,
-              iconSize: 24,
-              dropdownColor: ethereumColor.shade700,
-              focusColor: ethereumColor.shade700,
+              elevation: 16,
+              iconSize: 32,
+              dropdownColor: ethereumColor.shade900,
+              focusColor: ethereumColor.shade900,
               items: chartDataList.map(
                 (e) {
                   final indexOfE = chartDataList.indexOf(e);
@@ -67,7 +67,12 @@ class _MarketChartState extends State<MarketChart> {
                   };
                   return DropdownMenuItem(
                     value: indexOfE,
-                    child: Text(title),
+                    child: Text(
+                      title,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
                   );
                 },
               ).toList(),
