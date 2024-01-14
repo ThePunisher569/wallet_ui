@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
     print('width ${MediaQuery.sizeOf(context).width}');
     print('height ${MediaQuery.sizeOf(context).height}');
 
-    var deviceType = getDeviceType(MediaQuery.sizeOf(context));
+    final deviceType = getDeviceType(MediaQuery.sizeOf(context));
 
     print('the device type is ${deviceType.name}');
 

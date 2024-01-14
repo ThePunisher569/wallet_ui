@@ -141,9 +141,7 @@ class RecentActivity extends StatelessWidget {
 }
 
 class WalletAppBar extends StatelessWidget {
-  const WalletAppBar({
-    super.key,
-  });
+  const WalletAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +151,6 @@ class WalletAppBar extends StatelessWidget {
       backgroundColor: bgColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
       forceMaterialTransparency: true,
-      titleSpacing: 48,
       actionsIconTheme: const IconThemeData(weight: 50),
       title: SearchBar(
         backgroundColor: const MaterialStatePropertyAll(headerBgColor),
