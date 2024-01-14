@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
+import 'package:responsive_builder/responsive_builder.dart';
 import 'package:wallet_ui/sell_order.dart';
 
 import 'constants.dart';
@@ -161,58 +162,45 @@ class WalletAppBar extends StatelessWidget {
         hintStyle: MaterialStatePropertyAll(theme.textTheme.bodyLarge),
         leading: const Icon(Icons.search_outlined),
         padding: const MaterialStatePropertyAll(
-            EdgeInsets.symmetric(horizontal: 16)),
+          EdgeInsets.symmetric(horizontal: 16),
+        ),
         constraints: const BoxConstraints(
           minWidth: 120,
           maxWidth: 400,
           minHeight: 48,
         ),
+        shape: MaterialStatePropertyAll(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+          ),
+        ),
       ),
       actions: [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.notifications_outlined),
-          style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(Colors.grey.shade900),
-            alignment: Alignment.center,
-            elevation: const MaterialStatePropertyAll(8),
-            padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
+        ScreenTypeLayout.builder(
+          desktop: (p0) => Row(
+            children: appBarActionsListDesktop,
+          ),
+          mobile: (p0) => PopupMenuButton<OutlinedButton>(
+            padding: const EdgeInsets.all(8),
+            itemBuilder: (context) => List<PopupMenuItem<OutlinedButton>>.from(
+              appBarActionsListMobile.map(
+                (e) => PopupMenuItem<OutlinedButton>(
+                  value: e,
+                  padding: const EdgeInsets.all(8),
+                  child: e,
+                ),
+              ),
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            elevation: 8,
+            position: PopupMenuPosition.under,
+            enableFeedback: true,
+            initialValue: appBarActionsListMobile[0],
+            child: const Icon(Icons.more_vert_rounded),
           ),
         ),
-        gapH,
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.message_outlined),
-          style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(Colors.grey.shade900),
-            alignment: Alignment.center,
-            elevation: const MaterialStatePropertyAll(8),
-            padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
-          ),
-        ),
-        gapH,
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.card_giftcard_outlined),
-          style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(Colors.grey.shade900),
-            alignment: Alignment.center,
-            elevation: const MaterialStatePropertyAll(8),
-            padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
-          ),
-        ),
-        gapH,
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.settings_outlined),
-          style: ButtonStyle(
-            backgroundColor: MaterialStatePropertyAll(Colors.grey.shade900),
-            alignment: Alignment.center,
-            elevation: const MaterialStatePropertyAll(8),
-            padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
-          ),
-        ),
-        gapH,
       ],
     );
   }

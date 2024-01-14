@@ -112,3 +112,99 @@ final chartDataList = [
   monthlyCharData,
   yearlyChartData,
 ];
+
+final List<OutlinedButton> appBarActionsListMobile = [
+  OutlinedButton.icon(
+    onPressed: () {},
+    icon: const Icon(Icons.notifications_outlined),
+    style: ButtonStyle(
+      backgroundColor: MaterialStatePropertyAll(Colors.grey.shade900),
+      alignment: Alignment.center,
+      elevation: const MaterialStatePropertyAll(8),
+      padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
+      foregroundColor: const MaterialStatePropertyAll(ethereumColor),
+      iconColor: const MaterialStatePropertyAll(ethereumColor),
+    ),
+    label: const Text('Notifications'),
+  ),
+  OutlinedButton.icon(
+    onPressed: () {},
+    icon: const Icon(Icons.message_outlined),
+    style: ButtonStyle(
+      backgroundColor: MaterialStatePropertyAll(Colors.grey.shade900),
+      alignment: Alignment.center,
+      elevation: const MaterialStatePropertyAll(8),
+      padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
+    ),
+    label: const Text('Messages'),
+  ),
+  OutlinedButton.icon(
+    onPressed: () {},
+    icon: const Icon(Icons.card_giftcard_outlined),
+    style: ButtonStyle(
+      backgroundColor: MaterialStatePropertyAll(Colors.grey.shade900),
+      alignment: Alignment.center,
+      elevation: const MaterialStatePropertyAll(8),
+      padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
+    ),
+    label: const Text('Gifts'),
+  ),
+  OutlinedButton.icon(
+    onPressed: () {},
+    icon: const Icon(Icons.settings_outlined),
+    style: ButtonStyle(
+      backgroundColor: MaterialStatePropertyAll(Colors.grey.shade900),
+      alignment: Alignment.center,
+      elevation: const MaterialStatePropertyAll(8),
+      padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
+    ),
+    label: const Text('Settings'),
+  ),
+];
+
+final List<Widget> appBarActionsListDesktop = [
+  IconButton(
+    onPressed: () {},
+    icon: const Icon(Icons.notifications_outlined),
+    style: ButtonStyle(
+      backgroundColor: MaterialStatePropertyAll(Colors.grey.shade900),
+      alignment: Alignment.center,
+      elevation: const MaterialStatePropertyAll(8),
+      padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
+    ),
+  ),
+  gapH,
+  IconButton(
+    onPressed: () {},
+    icon: const Icon(Icons.message_outlined),
+    style: ButtonStyle(
+      backgroundColor: MaterialStatePropertyAll(Colors.grey.shade900),
+      alignment: Alignment.center,
+      elevation: const MaterialStatePropertyAll(8),
+      padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
+    ),
+  ),
+  gapH,
+  IconButton(
+    onPressed: () {},
+    icon: const Icon(Icons.card_giftcard_outlined),
+    style: ButtonStyle(
+      backgroundColor: MaterialStatePropertyAll(Colors.grey.shade900),
+      alignment: Alignment.center,
+      elevation: const MaterialStatePropertyAll(8),
+      padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
+    ),
+  ),
+  gapH,
+  IconButton(
+    onPressed: () {},
+    icon: const Icon(Icons.settings_outlined),
+    style: ButtonStyle(
+      backgroundColor: MaterialStatePropertyAll(Colors.grey.shade900),
+      alignment: Alignment.center,
+      elevation: const MaterialStatePropertyAll(8),
+      padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
+    ),
+  ),
+  gapH,
+];
