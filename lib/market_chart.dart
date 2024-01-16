@@ -29,7 +29,7 @@ class _MarketChartState extends State<MarketChart> {
             RichText(
               text: TextSpan(
                 text: 'Market Overview\n',
-                style: widget.theme.textTheme.headlineSmall?.copyWith(
+                style: widget.theme.textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
                 children: [

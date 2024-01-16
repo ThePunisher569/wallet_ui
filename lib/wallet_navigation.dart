@@ -249,8 +249,7 @@ class TrailingWidgetExpanded extends StatelessWidget {
     var deviceType = getDeviceType(MediaQuery.sizeOf(context));
 
     return Expanded(
-      child: deviceType == DeviceScreenType.desktop ||
-              deviceType == DeviceScreenType.tablet
+      child: deviceType == DeviceScreenType.desktop
           ? Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 8,
@@ -287,6 +286,7 @@ class TrailingWidgetExpanded extends StatelessWidget {
                               Icon(
                                 Icons.history,
                                 size: 54,
+                                color: Colors.white,
                               ),
                               hamburgerMenuIcon,
                             ],
@@ -344,6 +344,7 @@ class TrailingWidgetExpanded extends StatelessWidget {
                 leading: const Icon(
                   Icons.history,
                   size: 32,
+                  color: Colors.white,
                 ),
                 title: Text(
                   'History available',

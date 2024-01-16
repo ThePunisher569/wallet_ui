@@ -87,6 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
     print('the device type is ${deviceType.name}');
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       drawer: deviceType == DeviceScreenType.mobile ||
               deviceType == DeviceScreenType.tablet
           ? Drawer(
@@ -122,8 +123,11 @@ class BodyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile =
+        getDeviceType(MediaQuery.sizeOf(context)) == DeviceScreenType.mobile;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+      padding:
+          EdgeInsets.symmetric(horizontal: isMobile ? 8 : 32.0, vertical: 16.0),
       child: Column(
         children: [
           const Flexible(flex: 1, child: WalletAppBar()),

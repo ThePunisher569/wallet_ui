@@ -55,7 +55,7 @@ class _SellOrderState extends State<SellOrder> {
                 children: [
                   Text(
                     'Sell Order',
-                    style: widget.theme.textTheme.headlineSmall?.copyWith(
+                    style: widget.theme.textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),

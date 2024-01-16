@@ -17,6 +17,9 @@ class DashboardCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile =
+        getDeviceType(MediaQuery.sizeOf(context)) == DeviceScreenType.mobile;
+
     return Card(
       color: headerBgColor,
       shape: RoundedRectangleBorder(
@@ -24,16 +27,22 @@ class DashboardCard extends StatelessWidget {
       ),
       elevation: 16,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(32.0),
+        padding: EdgeInsets.all(isMobile ? 20 : 32.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             /// Dashboard title and filter button
             DashboardHeader(theme: theme),
-            gapV,
+
+            const SizedBox(height: 32),
 
             /// Cards of currency
-            DashboardCurrencyList(theme: theme),
+            ScreenTypeLayout.builder(
+              desktop: (p0) => DashboardCurrencyListDesktop(theme: theme),
+              mobile: (p0) => DashboardCurrencyListMobile(theme: theme),
+              tablet: (p0) => DashboardCurrencyListDesktop(theme: theme),
+            ),
             const SizedBox(height: 40),
 
             /// market overview and sell order
