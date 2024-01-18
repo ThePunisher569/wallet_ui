@@ -19,6 +19,10 @@ class DashboardCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile =
         getDeviceType(MediaQuery.sizeOf(context)) == DeviceScreenType.mobile;
+    bool isTablet =
+        getDeviceType(MediaQuery.sizeOf(context)) == DeviceScreenType.tablet;
+    bool isDesktop =
+        getDeviceType(MediaQuery.sizeOf(context)) == DeviceScreenType.desktop;
 
     return Card(
       color: headerBgColor,
@@ -27,9 +31,9 @@ class DashboardCard extends StatelessWidget {
       ),
       elevation: 16,
       child: SingleChildScrollView(
-        padding: EdgeInsets.all(isMobile ? 20 : 32.0),
+        padding: EdgeInsets.all(isMobile ? 16 : 32.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             /// Dashboard title and filter button
@@ -46,42 +50,57 @@ class DashboardCard extends StatelessWidget {
             const SizedBox(height: 40),
 
             /// market overview and sell order
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Market overview title and chart
-                Expanded(flex: 9, child: MarketChart(theme: theme)),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Market overview title and chart
+                  SizedBox(
+                    width: isDesktop
+                        ? MediaQuery.sizeOf(context).width * 0.42
+                        : MediaQuery.sizeOf(context).width * 0.84,
+                    child: MarketChart(theme: theme),
+                  ),
 
-                const SizedBox(width: 64),
-                // Sell order list view
-                Expanded(
-                  flex: 5,
-                  child: SellOrder(theme: theme),
-                ),
-              ],
+                  if (isDesktop) const SizedBox(width: 64),
+                  // Sell order list view
+                  if (isDesktop) SellOrder(theme: theme),
+                ],
+              ),
             ),
-            gapV,
+            const SizedBox(height: 40),
 
-            /// Recent Activities widget
+            if (isMobile || isTablet) SellOrder(theme: theme),
+
+            const SizedBox(height: 40),
+
             Text(
               'Recent Activities',
               style: theme.textTheme.headlineMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
-
             const SizedBox(height: 32),
 
-            RecentActivity(
-              theme: theme,
-              icon: Icons.arrow_upward_outlined,
+            /// Recent Activities widget
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RecentActivity(
+                    theme: theme,
+                    icon: Icons.arrow_upward_outlined,
+                  ),
+                  RecentActivity(
+                    theme: theme,
+                    icon: Icons.arrow_downward_outlined,
+                  )
+                ],
+              ),
             ),
-            const SizedBox(height: 16),
-            RecentActivity(
-              theme: theme,
-              icon: Icons.arrow_downward_outlined,
-            )
           ],
         ),
       ),
@@ -89,7 +108,7 @@ class DashboardCard extends StatelessWidget {
   }
 }
 
-class RecentActivity extends StatelessWidget {
+class RecentActivity extends StatefulWidget {
   const RecentActivity({
     super.key,
     required this.theme,
@@ -100,50 +119,86 @@ class RecentActivity extends StatelessWidget {
   final IconData icon;
 
   @override
+  State<RecentActivity> createState() => _RecentActivityState();
+}
+
+class _RecentActivityState extends State<RecentActivity> {
+  bool showColor=false;
+
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.50,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(icon),
-            style: const ButtonStyle(
-              backgroundColor: MaterialStatePropertyAll(Color(0xff161421)),
-              alignment: Alignment.center,
-              elevation: MaterialStatePropertyAll(8),
-              padding: MaterialStatePropertyAll(EdgeInsets.all(10)),
+    return MouseRegion(
+      onHover: (event) => setState(() {
+        showColor = true;
+      }),
+      onExit: (event) => setState(() {
+        showColor = false;
+      }),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: showColor
+              ? LinearGradient(colors: ethereumCardGradientColors)
+              : null,
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+              onPressed: () {},
+              icon: Icon(widget.icon),
+              style: const ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll(Color(0xff161421)),
+                alignment: Alignment.center,
+                elevation: MaterialStatePropertyAll(8),
+                padding: MaterialStatePropertyAll(EdgeInsets.all(10)),
+              ),
             ),
-          ),
-          Text(
-            'Bitcoin',
-            style: theme.textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.bold,
+            const SizedBox(
+              width: 32,
             ),
-          ),
-          Text(
-            (DateFormat('dd:MM:yyyy')..add_jm()).format(DateTime.now()),
-            style: theme.textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w200,
-              color: Colors.white54,
+            Text(
+              'Bitcoin',
+              style: widget.theme.textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          Text(
-            '+1545.00',
-            style: theme.textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w200,
-              color: Colors.white54,
+            const SizedBox(
+              width: 32,
             ),
-          ),
-          Text(
-            'Completed',
-            style: theme.textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w200,
-              color: Colors.white54,
+            Text(
+              (DateFormat('dd:MM:yyyy')..add_jm()).format(DateTime.now()),
+              style: widget.theme.textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.w200,
+                color: Colors.white54,
+              ),
             ),
-          ),
-        ],
+            const SizedBox(
+              width: 32,
+            ),
+            Text(
+              '+1545.00',
+              style: widget.theme.textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.w200,
+                color: Colors.white54,
+              ),
+            ),
+            const SizedBox(
+              width: 32,
+            ),
+            Text(
+              'Completed',
+              style: widget.theme.textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.w200,
+                color: Colors.white54,
+              ),
+            ),
+            const SizedBox(
+              width: 32,
+            ),
+          ],
+        ),
       ),
     );
   }
