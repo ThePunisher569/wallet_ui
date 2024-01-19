@@ -7,10 +7,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'constants.dart';
 
 class DashboardHeader extends StatelessWidget {
-  const DashboardHeader({
-    super.key,
-    required this.theme,
-  });
+  const DashboardHeader({super.key, required this.theme});
 
   final ThemeData theme;
 
@@ -68,10 +65,7 @@ class DashboardHeader extends StatelessWidget {
 }
 
 class DashboardCurrencyListDesktop extends StatelessWidget {
-  const DashboardCurrencyListDesktop({
-    super.key,
-    required this.theme,
-  });
+  const DashboardCurrencyListDesktop({super.key, required this.theme});
 
   final ThemeData theme;
 
@@ -124,10 +118,7 @@ class DashboardCurrencyListDesktop extends StatelessWidget {
 }
 
 class DashboardCurrencyListMobile extends StatelessWidget {
-  const DashboardCurrencyListMobile({
-    super.key,
-    required this.theme,
-  });
+  const DashboardCurrencyListMobile({super.key, required this.theme});
 
   final ThemeData theme;
 
@@ -231,151 +222,205 @@ class _CurrencyCardState extends State<CurrencyCard> {
     final isMobile =
         getDeviceType(MediaQuery.sizeOf(context)) == DeviceScreenType.mobile;
 
+    return isMobile
+        ? GestureDetector(
+            onTapDown: (tapDetails) {
+              setState(() {
+                angle = 0.1;
+                elevation = 48;
+
+                /// This line caused position magic
+                position = tapDetails.localPosition.translate(-54, -54);
+              });
+
+              Future.delayed(
+                const Duration(seconds: 2),
+                () => setState(() {
+                  angle = 0;
+                  elevation = 0;
+                }),
+              );
+            },
+            child: CurrencyCardBody(
+              elevation: elevation,
+              widget: widget,
+              angle: angle,
+              position: position,
+            ),
+          )
+        : MouseRegion(
+            onHover: (event) => setState(() {
+              elevation = 48;
+              angle = 0.1;
+              position = event.localPosition.translate(-54, -54);
+            }),
+            onExit: (event) => setState(() {
+              elevation = 16;
+              angle = 0;
+            }),
+            child: CurrencyCardBody(
+              elevation: elevation,
+              widget: widget,
+              angle: angle,
+              position: position,
+            ),
+          );
+  }
+}
+
+class CurrencyCardBody extends StatelessWidget {
+  const CurrencyCardBody({
+    super.key,
+    required this.elevation,
+    required this.widget,
+    required this.angle,
+    required this.position,
+  });
+
+  final double elevation;
+  final CurrencyCard widget;
+  final double angle;
+  final Offset position;
+
+  @override
+  Widget build(BuildContext context) {
+    final isMobile =
+        getDeviceType(MediaQuery.sizeOf(context)) == DeviceScreenType.mobile;
+
     bool isTablet =
         getDeviceType(MediaQuery.sizeOf(context)) == DeviceScreenType.tablet;
 
-    return MouseRegion(
-      onHover: (event) => setState(() {
-        elevation = 48;
-        angle = 0.1;
-        position = event.localPosition.translate(-54, -54);
-      }),
-      onExit: (event) => setState(() {
-        elevation = 16;
-        angle = 0;
-      }),
-      child: AnimatedContainer(
-        duration: const Duration(seconds: 2),
-        alignment: Alignment.center,
-        curve: Curves.easeInToLinear,
-        child: Card(
-          elevation: elevation,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius),
-          ),
-          shadowColor: widget.shadowColor,
-          color: widget.bgColorTransformed,
-          child: Transform(
-            transform: Matrix4.rotationZ(angle),
-            filterQuality: FilterQuality.high,
-            alignment: Alignment.bottomLeft,
-            child: Container(
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(borderRadius),
-                gradient: SweepGradient(
-                  colors: widget.lgColors,
-                  center: Alignment.topRight,
-                  stops: const [0.2, 0.3],
-                ),
+    return AnimatedContainer(
+      duration: const Duration(seconds: 2),
+      alignment: Alignment.center,
+      curve: Curves.easeInToLinear,
+      child: Card(
+        elevation: elevation,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
+        shadowColor: widget.shadowColor,
+        color: widget.bgColorTransformed,
+        child: Transform(
+          transform: Matrix4.rotationZ(angle),
+          filterQuality: FilterQuality.high,
+          alignment: Alignment.bottomLeft,
+          child: Container(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(borderRadius),
+              gradient: SweepGradient(
+                colors: widget.lgColors,
+                center: Alignment.topRight,
+                stops: const [0.2, 0.3],
               ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  /// blur effect on top of card wherever mouse goes
-                  if (elevation == 48)
-                    Positioned(
-                      left: position.dx,
-                      top: position.dy,
-                      child: kIsWeb
-                          ? BackdropFilter(
-                              filter: ImageFilter.blur(
+            ),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                /// blur effect on top of card wherever mouse goes
+                if (elevation == 48)
+                  Positioned(
+                    right: position.dx,
+                    top: position.dy,
+                    child: kIsWeb
+                        ? BackdropFilter(
+                            filter: ImageFilter.blur(
+                              sigmaX: 10,
+                              sigmaY: 10,
+                            ),
+                            child: ImageFiltered(
+                              imageFilter: ImageFilter.blur(
                                 sigmaX: 10,
                                 sigmaY: 10,
                               ),
-                              child: ImageFiltered(
-                                imageFilter: ImageFilter.blur(
-                                  sigmaX: 10,
-                                  sigmaY: 10,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: widget.iconBgColor,
+                                  shape: BoxShape.circle,
                                 ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: widget.iconBgColor,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  width: 40,
-                                  height: 40,
-                                ),
-                              ),
-                            )
-                          : Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: widget.iconBgColor,
-                                shape: BoxShape.circle,
+                                width: 40,
+                                height: 40,
                               ),
                             ),
-                    ),
-
-                  /// Card rest of the contents
-                  Padding(
-                    padding: const EdgeInsets.all(32.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(24),
-                                color: widget.iconBgColor,
-                              ),
-                              padding: const EdgeInsets.all(8),
-                              alignment: Alignment.center,
-                              child: Icon(
-                                widget.icon,
-                                size: 54,
-                                color: Colors.black,
-                              ),
+                          )
+                        : Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: widget.iconBgColor,
+                              shape: BoxShape.circle,
                             ),
-                            const SizedBox(height: 40),
-                            RichText(
-                              text: TextSpan(
-                                text: '\$${widget.price}\n',
-                                style: widget.theme.textTheme.displaySmall
-                                    ?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                children: [
-                                  TextSpan(
-                                    text: '${widget.percent}% This week',
-                                    style: widget.theme.textTheme.bodyLarge
-                                        ?.copyWith(color: Colors.white38),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(width: isMobile ? 48 : 96),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            const Align(
-                                alignment: Alignment.topRight,
-                                child: hamburgerMenuIcon),
-                            const SizedBox(height: 40),
-                            widget.showChart
-                                ? Icon(
-                                    Icons.show_chart_outlined,
-                                    size: 54,
-                                    color: widget.iconBgColor,
-                                  )
-                                : SizedBox(
-                                    width: isTablet ? 48 : 54,
-                                    height: isTablet ? 48 : 54,
-                                  )
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
                   ),
-                ],
-              ),
+
+                /// Card rest of the contents
+                Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(24),
+                              color: widget.iconBgColor,
+                            ),
+                            padding: const EdgeInsets.all(8),
+                            alignment: Alignment.center,
+                            child: Icon(
+                              widget.icon,
+                              size: 54,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 40),
+                          RichText(
+                            text: TextSpan(
+                              text: '\$${widget.price}\n',
+                              style:
+                                  widget.theme.textTheme.displaySmall?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: '${widget.percent}% This week',
+                                  style: widget.theme.textTheme.bodyLarge
+                                      ?.copyWith(color: Colors.white38),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(width: isMobile ? 48 : 96),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          const Align(
+                              alignment: Alignment.topRight,
+                              child: hamburgerMenuIcon),
+                          const SizedBox(height: 40),
+                          widget.showChart
+                              ? Icon(
+                                  Icons.show_chart_outlined,
+                                  size: 54,
+                                  color: widget.iconBgColor,
+                                )
+                              : SizedBox(
+                                  width: isTablet ? 48 : 54,
+                                  height: isTablet ? 48 : 54,
+                                )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),
