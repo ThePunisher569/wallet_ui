@@ -1,16 +1,15 @@
-# wallet_ui
+# Crypto Wallet Web App Dashboard UI
 
-Crypto Wallet Dashboard UI
+*Built in Flutter by following the Material 3 Dark Mode Design Principles*
 
-## Getting Started
+[Go to Live App](https://thepunisher569.github.io/wallet_ui/deployment/web/)
 
-This project is a starting point for a Flutter application.
+**Crypto Wallet Application Dashboard Demo**
 
-A few resources to get you started if this is your first Flutter project:
+https://github.com/ThePunisher569/wallet_ui/assets/49368136/7bd1d941-d6ec-4135-9ee6-401f1c42532f
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+**Responsive Screen Demo**
+
+https://github.com/ThePunisher569/wallet_ui/assets/49368136/d486c767-cb1d-4c78-a63d-740f81fe0347
+
