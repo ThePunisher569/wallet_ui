@@ -291,9 +291,11 @@ class CurrencyCardBody extends StatelessWidget {
         getDeviceType(MediaQuery.sizeOf(context)) == DeviceScreenType.tablet;
 
     return AnimatedContainer(
-      duration: const Duration(seconds: 2),
+      duration: const Duration(milliseconds: 1200),
       alignment: Alignment.center,
-      curve: Curves.easeInToLinear,
+      curve: Curves.easeInOutCubic,
+      transform: Matrix4.rotationZ(angle),
+      transformAlignment: Alignment.bottomLeft,
       child: Card(
         elevation: elevation,
         shape: RoundedRectangleBorder(
@@ -301,127 +303,122 @@ class CurrencyCardBody extends StatelessWidget {
         ),
         shadowColor: widget.shadowColor,
         color: widget.bgColorTransformed,
-        child: Transform(
-          transform: Matrix4.rotationZ(angle),
-          filterQuality: FilterQuality.high,
-          alignment: Alignment.bottomLeft,
-          child: Container(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(borderRadius),
-              gradient: SweepGradient(
-                colors: widget.lgColors,
-                center: Alignment.topRight,
-                stops: const [0.2, 0.3],
-              ),
+        child: Container(
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(borderRadius),
+            gradient: SweepGradient(
+              colors: widget.lgColors,
+              center: Alignment.topRight,
+              stops: const [0.2, 0.3],
             ),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                /// blur effect on top of card wherever mouse goes
-                if (elevation == 48)
-                  Positioned(
-                    right: position.dx,
-                    top: position.dy,
-                    child: kIsWeb
-                        ? BackdropFilter(
-                            filter: ImageFilter.blur(
+          ),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              /// blur effect on top of card wherever mouse goes
+              if (elevation == 48)
+                Positioned(
+                  right: position.dx,
+                  top: position.dy,
+                  child: kIsWeb
+                      ? BackdropFilter(
+                          filter: ImageFilter.blur(
+                            sigmaX: 10,
+                            sigmaY: 10,
+                          ),
+                          child: ImageFiltered(
+                            imageFilter: ImageFilter.blur(
                               sigmaX: 10,
                               sigmaY: 10,
                             ),
-                            child: ImageFiltered(
-                              imageFilter: ImageFilter.blur(
-                                sigmaX: 10,
-                                sigmaY: 10,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: widget.iconBgColor,
+                                shape: BoxShape.circle,
                               ),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: widget.iconBgColor,
-                                  shape: BoxShape.circle,
-                                ),
-                                width: 40,
-                                height: 40,
-                              ),
-                            ),
-                          )
-                        : Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: widget.iconBgColor,
-                              shape: BoxShape.circle,
+                              width: 40,
+                              height: 40,
                             ),
                           ),
-                  ),
-
-                /// Card rest of the contents
-                Padding(
-                  padding: const EdgeInsets.all(32.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(24),
-                              color: widget.iconBgColor,
-                            ),
-                            padding: const EdgeInsets.all(8),
-                            alignment: Alignment.center,
-                            child: Icon(
-                              widget.icon,
-                              size: 54,
-                              color: Colors.black,
-                            ),
+                        )
+                      : Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: widget.iconBgColor,
+                            shape: BoxShape.circle,
                           ),
-                          const SizedBox(height: 40),
-                          RichText(
-                            text: TextSpan(
-                              text: '\$${widget.price}\n',
-                              style:
-                                  widget.theme.textTheme.displaySmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: '${widget.percent}% This week',
-                                  style: widget.theme.textTheme.bodyLarge
-                                      ?.copyWith(color: Colors.white38),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(width: isMobile ? 48 : 96),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          const Align(
-                              alignment: Alignment.topRight,
-                              child: hamburgerMenuIcon),
-                          const SizedBox(height: 40),
-                          widget.showChart
-                              ? Icon(
-                                  Icons.show_chart_outlined,
-                                  size: 54,
-                                  color: widget.iconBgColor,
-                                )
-                              : SizedBox(
-                                  width: isTablet ? 48 : 54,
-                                  height: isTablet ? 48 : 54,
-                                )
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
                 ),
-              ],
-            ),
+
+              /// Card rest of the contents
+              Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(24),
+                            color: widget.iconBgColor,
+                          ),
+                          padding: const EdgeInsets.all(8),
+                          alignment: Alignment.center,
+                          child: Icon(
+                            widget.icon,
+                            size: 54,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(height: 40),
+                        RichText(
+                          text: TextSpan(
+                            text: '\$${widget.price}\n',
+                            style:
+                                widget.theme.textTheme.displaySmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: '${widget.percent}% This week',
+                                style: widget.theme.textTheme.bodyLarge
+                                    ?.copyWith(color: Colors.white38),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: isMobile ? 48 : 96),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        const Align(
+                            alignment: Alignment.topRight,
+                            child: hamburgerMenuIcon),
+                        const SizedBox(height: 40),
+                        widget.showChart
+                            ? Icon(
+                                Icons.show_chart_outlined,
+                                size: 54,
+                                color: widget.iconBgColor,
+                              )
+                            : SizedBox(
+                                width: isTablet ? 48 : 54,
+                                height: isTablet ? 48 : 54,
+                              )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
