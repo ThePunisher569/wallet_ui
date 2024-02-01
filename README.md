@@ -1,4 +1,7 @@
 # Crypto Wallet Web App Dashboard UI
+![Wallet](https://github.com/ThePunisher569/wallet_ui/assets/49368136/2ddb17f1-330c-4004-9ed2-099a6dd3bcf5)
+
+![Wallet Mobile](https://github.com/ThePunisher569/wallet_ui/assets/49368136/85515e22-d0a8-476c-8ed1-40f6c09c3f9a)
 
 *Built in Flutter by following the Material 3 Dark Mode Design Principles*
 
@@ -12,7 +15,6 @@ https://github.com/ThePunisher569/wallet_ui/assets/49368136/7bd1d941-d6ec-4135-9
 **Responsive Screen Demo**
 
 https://github.com/ThePunisher569/wallet_ui/assets/49368136/d486c767-cb1d-4c78-a63d-740f81fe0347
-
 
 
 ## Contributing
